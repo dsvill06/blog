@@ -5,6 +5,15 @@ on:
     types: [obsidian_update]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
 jobs:
   sync-and-rebuild:
     runs-on: ubuntu-latest
@@ -15,25 +24,33 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
+          cache: yarn
           
       - name: Download Obsidian content
         run: |
-          # Replace with your Obsidian vault repo URL
           git clone https://github.com/dsvill06/blog_posts.git temp_vault
           cp -r temp_vault/path/to/notes/* data/blog/
           rm -rf temp_vault
         
       - name: Install dependencies
-        run: npm install
+        run: yarn install
+        
+      - id: configurepages
+        uses: actions/configure-pages@v5
         
       - name: Build site
-        run: npm run build
-        
-      - name: Commit and push changes
-        run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
-          git add .
-          git commit -m "Auto-sync Obsidian content" || echo "No changes to commit"
-          git push 
+        run: yarn build
+        env:
+          EXPORT: 1
+          UNOPTIMIZED: 1
+          BASE_PATH: ${{ steps.configurepages.outputs.base_path }}
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 

@@ -3,10 +3,15 @@ name: Trigger Blog Rebuild
 on:
   push:
     branches:
-      - main  # or whatever your default branch is
+      - main
     paths:
       - '**.md'
       - '**.mdx'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   trigger:
@@ -17,5 +22,5 @@ jobs:
           curl -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.PAT_TOKEN }}" \
-          https://api.github.com/repos/dsvill06/YOUR_BLOG_REPO/dispatches \
+          https://api.github.com/repos/dsvill06/blog/dispatches \
           -d '{"event_type":"obsidian_update"}' 

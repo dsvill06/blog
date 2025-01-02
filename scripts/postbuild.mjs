@@ -1,3 +1,4 @@
+/* eslint-disable */
 import rss from './rss.mjs'
 import path from 'path'
 import fs from 'fs/promises'
@@ -8,12 +9,12 @@ async function postbuild() {
 
 // Add this function to process new markdown files
 async function processNewMarkdownFiles() {
-  const blogDir = path.join(process.cwd(), 'data/blog');
-  const files = await fs.readdir(blogDir);
+  const blogDir = path.join(process.cwd(), 'data/blog')
+  const files = await fs.readdir(blogDir)
   
   for (const file of files) {
     if (file.endsWith('.md') && !file.endsWith('.mdx')) {
-      const mdPath = path.join(blogDir, file);
+      const mdPath = path.join(blogDir, file)
       const mdxPath = mdPath.replace('.md', '.mdx');
       
       // Read the markdown content

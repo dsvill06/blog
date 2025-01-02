@@ -15,10 +15,16 @@ async function processNewMarkdownFiles() {
   for (const file of files) {
     if (file.endsWith('.md') && !file.endsWith('.mdx')) {
       const mdPath = path.join(blogDir, file)
-      const mdxPath = mdPath.replace('.md', '.mdx');
+      const mdxPath = mdPath.replace('.md', '.mdx')
       
       // Read the markdown content
-      const content = await fs.readFile(mdPath, 'utf-8');
+      let content = await fs.readFile(mdPath, 'utf-8')
+      
+      // Replace image paths
+      content = content.replace(
+        /!\[(.*?)\]\((\.\/attachments\/.*?)\)/g,
+        '![$1](/static/attachments/$2)'
+      )
       
       // Add frontmatter if it doesn't exist
       const processedContent = content.startsWith('---') 
@@ -30,16 +36,16 @@ tags: []
 draft: false
 ---
 
-${content}`;
+${content}`
       
       // Write as MDX
-      await fs.writeFile(mdxPath, processedContent);
+      await fs.writeFile(mdxPath, processedContent)
       
       // Remove original MD file
-      await fs.unlink(mdPath);
+      await fs.unlink(mdPath)
     }
   }
 }
 
 postbuild()
-await processNewMarkdownFiles();
+await processNewMarkdownFiles()

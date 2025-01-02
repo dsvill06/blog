@@ -31,6 +31,7 @@ jobs:
         run: |
           git clone https://github.com/dsvill06/blog_posts.git temp_vault
           cp -r temp_vault/path/to/notes/* data/blog/
+          cp -r temp_vault/path/to/attachments public/static/attachments
           rm -rf temp_vault
         
       - name: Install dependencies

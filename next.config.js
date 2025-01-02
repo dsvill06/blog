@@ -79,6 +79,7 @@ module.exports = () => {
         },
       ],
       unoptimized,
+      domains: ['localhost'],
     },
     async headers() {
       return [

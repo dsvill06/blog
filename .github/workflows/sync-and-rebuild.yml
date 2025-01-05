@@ -29,15 +29,15 @@ jobs:
           
       - name: Create directories
         run: |
-          mkdir -p public/blog/static/attachments
+          mkdir -p public/static/attachments
           mkdir -p data/blog
           
       - name: Download Obsidian content
         run: |
           git clone https://github.com/dsvill06/blog_posts.git temp_vault
-          cp -r temp_vault/*.md data/blog/
-          cp -r temp_vault/*.mdx data/blog/
-          cp -r temp_vault/attachments/* public/blog/static/attachments/
+          cp -r temp_vault/*.md data/blog/ || true
+          cp -r temp_vault/*.mdx data/blog/ || true
+          cp -r temp_vault/attachments/* public/static/attachments/ || true
           rm -rf temp_vault
         
       - name: Install dependencies

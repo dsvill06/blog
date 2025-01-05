@@ -11,6 +11,7 @@ async function postbuild() {
 async function processNewMarkdownFiles() {
   const blogDir = path.join(process.cwd(), 'data/blog')
   const files = await fs.readdir(blogDir)
+  const basePath = process.env.BASE_PATH || ''
   
   for (const file of files) {
     if (file.endsWith('.md') && !file.endsWith('.mdx')) {
@@ -23,7 +24,7 @@ async function processNewMarkdownFiles() {
       // Replace image paths - match both with and without ./ prefix
       content = content.replace(
         /!\[(.*?)\]\((\.\/)?attachments\/(.*?)\)/g,
-        '![$1](/blog/static/attachments/$3)'
+        `![$1]${basePath}/static/attachments/$3)`
       )
       
       // Add frontmatter if it doesn't exist

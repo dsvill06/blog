@@ -27,15 +27,21 @@ jobs:
           node-version: '20'
           cache: yarn
           
+      - name: Create directories
+        run: |
+          mkdir -p public/static/attachments
+          mkdir -p data/blog
+          
       - name: Download Obsidian content
         run: |
           git clone https://github.com/dsvill06/blog_posts.git temp_vault
-          cp -r temp_vault/path/to/notes/* data/blog/
-          cp -r temp_vault/path/to/attachments public/static/attachments
+          cp -r temp_vault/*.md data/blog/
+          cp -r temp_vault/*.mdx data/blog/
+          cp -r temp_vault/attachments/* public/static/attachments/
           rm -rf temp_vault
         
       - name: Install dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
         
       - id: configurepages
         uses: actions/configure-pages@v5

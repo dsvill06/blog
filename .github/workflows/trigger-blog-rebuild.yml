@@ -7,6 +7,7 @@ on:
     paths:
       - '**.md'
       - '**.mdx'
+      - 'attachments/**'
 
 permissions:
   contents: write

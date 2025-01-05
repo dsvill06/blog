@@ -20,10 +20,10 @@ async function processNewMarkdownFiles() {
       // Read the markdown content
       let content = await fs.readFile(mdPath, 'utf-8')
       
-      // Replace image paths
+      // Replace image paths - match both with and without ./ prefix
       content = content.replace(
-        /!\[(.*?)\]\((\.\/attachments\/.*?)\)/g,
-        '![$1](/static/attachments/$2)'
+        /!\[(.*?)\]\((\.\/)?attachments\/(.*?)\)/g,
+        '![$1](/static/attachments/$3)'
       )
       
       // Add frontmatter if it doesn't exist

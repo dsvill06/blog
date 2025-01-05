@@ -23,7 +23,7 @@ async function processNewMarkdownFiles() {
       // Replace image paths - match both with and without ./ prefix
       content = content.replace(
         /!\[(.*?)\]\((\.\/)?attachments\/(.*?)\)/g,
-        '![$1](/static/attachments/$3)'
+        '![$1](/blog/static/attachments/$3)'
       )
       
       // Add frontmatter if it doesn't exist
